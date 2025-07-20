@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const timerMap = require('../../utils/timerMap');
+const { createSuccessEmbed, createErrorEmbed, createCustomEmojiEmbed } = require('../../utils/embed');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,16 +17,19 @@ module.exports = {
         const min = minutes * 60 * 1000;
 
         if (!member.voice.channel) {
-            await interaction.reply(`${member.displayName}さんは通話に参加していません`);
+            const errorEmbed = createErrorEmbed(`${member.displayName}さんは通話に参加していません`);
+            await interaction.reply({ embeds: [errorEmbed] });
             return;
         }
 
         if (minutes < 1) {
-            await interaction.reply(`1分以上の有効な数字を入力してください`);
+            const errorEmbed = createErrorEmbed(`1分以上の有効な数字を入力してください`);
+            await interaction.reply({ embeds: [errorEmbed] });
             return;
         }
 
-        await interaction.reply(`${minutes}分後にお知らせします`);
+        const successEmbed = createSuccessEmbed(`${minutes}分後に切断します`);
+        await interaction.reply({ embeds: [successEmbed] });
 
         if (timerMap.has(user)) {
             clearTimeout(timerMap.get(user));
@@ -48,21 +52,25 @@ async function alert(interaction, member) {
         const displayName = member.displayName;
 
         if (member.voice.channel === null) {
-            await interaction.followUp(`${displayName}さんはすでに通話にいないため、タイマーをリセットしました`);
+            const errorEmbed = createErrorEmbed(`${displayName}さんはすでに通話にいないため、タイマーをリセットしました`);
+            await interaction.followUp({ embeds: [errorEmbed] });
             return;
         }
 
         try {
             await member.voice.disconnect();
-            await interaction.followUp(`${displayName}さんを切断しました。💤`);
+            const successEmbed = createSuccessEmbed(`${displayName}さんを切断しました💤`);
+            await interaction.followUp({ embeds: [successEmbed] });
         } catch (error) {
-            await interaction.followUp(`ユーザーを切断する際にエラーが発生しました。`);
+            const errorEmbed = createErrorEmbed(`ユーザーを切断する際にエラーが発生しました`);
+            await interaction.followUp({ embeds: [errorEmbed] });
             console.log("ユーザーを切断する際にエラーが発生しました。", error);
         }
 
         timerMap.delete(member.user.id);
     } catch (error) {
-        await interaction.followUp(`タイマー終了時にエラーが発生しました。`);
+        const errorEmbed = createErrorEmbed(`タイマー終了時にエラーが発生しました`);
+        await interaction.followUp({ embeds: [errorEmbed] });
         console.log("タイマー終了時にエラーが発生しました。", error);
     }
 }
