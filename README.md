@@ -1,0 +1,7 @@
+# config.json
+
+{
+  "clientId": "<Your-Client-ID>",
+  "guildId": "<Your-Guild-ID>",
+  "token": "<Your-Bot-Token>"
+}
