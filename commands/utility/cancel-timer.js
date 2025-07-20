@@ -11,7 +11,7 @@ module.exports = {
 
         if (!timerMap.has(user)) {
             const errorEmbed = createErrorEmbed('現在、設定されているタイマーはありません');
-            await interaction.reply({ embeds: [errorEmbed] });
+            await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
             return;
         }
 
@@ -19,6 +19,6 @@ module.exports = {
         timerMap.delete(user);
 
         const successEmbed = createSuccessEmbed('タイマーがキャンセルされました');
-        await interaction.reply({ embeds: [successEmbed] });
+        await interaction.reply({ embeds: [successEmbed], ephemeral: true });
     }
 };
