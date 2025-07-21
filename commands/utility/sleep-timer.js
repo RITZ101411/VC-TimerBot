@@ -32,9 +32,9 @@ module.exports = {
         await interaction.reply({ embeds: [successEmbed], ephemeral: true });
 
         if (timerMap.has(user)) {
-            clearTimeout(timerMap.get(user));
+            clearTimeout(timerMap.get(user).timeoutId);
         }
-
+        
         const timeoutId = setTimeout(async () => {
             try {
                 await alert(interaction, member);
@@ -42,8 +42,11 @@ module.exports = {
                 console.error('Alert error:', e);
             }
         }, min);
-
-        timerMap.set(user, timeoutId);
+        
+        timerMap.set(user, {
+            timeoutId,
+            expiresAt: Date.now() + min,
+        });
     },
 };
 
