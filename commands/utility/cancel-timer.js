@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const timerMap = require('../../utils/timerMap');
-const { createSuccessEmbed, createErrorEmbed, createCustomEmojiEmbed } = require('../../utils/embed');
+const { createSuccessEmbed, createErrorEmbed } = require('../../utils/embed');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,13 +9,15 @@ module.exports = {
     async execute(interaction) {
         const user = interaction.user.id;
 
-        if (!timerMap.has(user)) {
+        const timerEntry = timerMap.get(user);
+
+        if (!timerEntry) {
             const errorEmbed = createErrorEmbed('現在、設定されているタイマーはありません');
             await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
             return;
         }
 
-        clearTimeout(timerMap.get(user));
+        clearTimeout(timerEntry.timeoutId);
         timerMap.delete(user);
 
         const successEmbed = createSuccessEmbed('タイマーがキャンセルされました');
