@@ -1,9 +1,11 @@
 const { TranscribeClient } = require("@aws-sdk/client-transcribe");
-const { AWS_REGION } = require("../../config.json");
-const REGION = AWS_REGION;
+require('dotenv').config();
 
-console.log(`Using AWS region: ${REGION}`);
+const { AWS_REGION } = process.env;
+const region = AWS_REGION;
 
-const transcribeClient = new TranscribeClient({ region: REGION });
+console.log(`Using AWS region: ${region}`);
+
+const transcribeClient = new TranscribeClient({ region: region });
 
 module.exports = transcribeClient;
