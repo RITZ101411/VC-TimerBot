@@ -7,9 +7,18 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
+
+  "description": "寝落ちを予約して時間経過で通話から切断するだけのDiscord BOT",
   "dependencies": {
     "discord.js": "^14.21.0",
     "dotenv": "^17.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RITZ101411/VC-TimerBot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RITZ101411/VC-TimerBot/issues"
+  },
+  "homepage": "https://github.com/RITZ101411/VC-TimerBot#readme"
 }
