@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const timerMap = require('../../utils/timerMap');
+const timerMap = require('../../timer/timer');
 const { createSuccessEmbed, createErrorEmbed, createCustomEmojiEmbed } = require('../../utils/embed');
 
 module.exports = {

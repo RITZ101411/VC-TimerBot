@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const connectionMap = require('../../utils/connectionMap');
+const { connectionMap } = require('../../voice/connection');
 const { createSuccessEmbed, createErrorEmbed, createCustomEmojiEmbed } = require('../../utils/embed');
 const { joinVoiceChannel } = require('@discordjs/voice');
 require('dotenv').config();

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const connectionMap = require('../../utils/connectionMap');
+const { connectionMap, connectionCreate} = require('../../voice/connection');
 const { createSuccessEmbed, createErrorEmbed, createCustomEmojiEmbed } = require('../../utils/embed');
-const { joinVoiceChannel } = require('@discordjs/voice');
+const { SetReceiver } = require('../../voice/receiver');
 require('dotenv').config();
 
 const { guildId } = process.env;
@@ -14,7 +14,7 @@ module.exports = {
         const user = interaction.user.id;
         const member = await interaction.guild.members.fetch(user);
         const channel = interaction.member?.voice?.channel;
-
+        
         if(connectionMap.get(interaction.guildId)){
             const errorEmbed = createErrorEmbed(`既に通話に参加しています`);
             return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
@@ -25,13 +25,8 @@ module.exports = {
             return interaction.reply({ embeds: [errorEmbed], ephemeral: true });
         }
 
-        const connection = joinVoiceChannel({
-            channelId: channel.id,
-            guildId: guildId,
-            adapterCreator: channel.guild.voiceAdapterCreator
-        });
-
-        connectionMap.set(interaction.guildId, connection);
+        const connection = connectionCreate(interaction);
+        SetReceiver(connection);
 
         const successEmbed = createSuccessEmbed(`${channel}に参加しました`);
         await interaction.reply({ embeds: [successEmbed], ephemeral: false });

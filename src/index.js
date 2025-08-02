@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const { token } = process.env;
 
-const timerMap = require('./utils/timerMap');
+const timerMap = require('./timer/timer');
 
 const client = new Client({ intents: [
 	GatewayIntentBits.Guilds,
